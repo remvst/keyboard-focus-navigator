@@ -1,6 +1,6 @@
 {
     "name": "@remvst/keyboard-focus-navigator",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Helper to navigate focus between elements of a page using the keyboard.",
     "main": "lib/index.js",
     "scripts": {
