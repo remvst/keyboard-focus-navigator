@@ -1,10 +1,10 @@
 import { Vector2Like, distance, modulo, normalizeAngle } from "./utils";
 
 export class HandlerMap {
-    [key: string]: (navigator: KeyboardNavigator) => void;
+    [key: string]: (navigator: KeyboardFocusNavigator) => void;
 }
 
-export class KeyboardNavigator {
+export class KeyboardFocusNavigator {
     static readonly ARROW_KEY_HANDLERS: HandlerMap = {
         arrowleft: (n) => n.rotateFocusXY(-1, 0),
         arrowright: (n) => n.rotateFocusXY(1, 0),
