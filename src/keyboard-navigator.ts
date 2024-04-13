@@ -5,29 +5,24 @@ export class HandlerMap {
 }
 
 export class KeyboardNavigator {
-
     static readonly ARROW_KEY_HANDLERS: HandlerMap = {
-        'arrowleft': (n) => n.rotateFocusXY(-1, 0),
-        'arrowright': (n) => n.rotateFocusXY(1, 0),
-        'arrowup': (n) => n.rotateFocusXY(0, -1),
-        'arrowdown': (n) => n.rotateFocusXY(0, 1),
+        arrowleft: (n) => n.rotateFocusXY(-1, 0),
+        arrowright: (n) => n.rotateFocusXY(1, 0),
+        arrowup: (n) => n.rotateFocusXY(0, -1),
+        arrowdown: (n) => n.rotateFocusXY(0, 1),
     };
 
     static readonly WASD_HANDLERS: HandlerMap = {
-        'a': (n) => n.rotateFocusXY(-1, 0),
-        'd': (n) => n.rotateFocusXY(1, 0),
-        'w': (n) => n.rotateFocusXY(0, -1),
-        's': (n) => n.rotateFocusXY(0, 1),
+        a: (n) => n.rotateFocusXY(-1, 0),
+        d: (n) => n.rotateFocusXY(1, 0),
+        w: (n) => n.rotateFocusXY(0, -1),
+        s: (n) => n.rotateFocusXY(0, 1),
     };
 
     private handlerMap: HandlerMap = {};
     private keyDownListener = (event: KeyboardEvent) => this.keyDown(event);
 
-    constructor(
-        readonly view: HTMLElement,
-    ) {
-
-    }
+    constructor(readonly view: HTMLElement) {}
 
     setup() {
         window.addEventListener("keydown", this.keyDownListener, false);
@@ -37,7 +32,7 @@ export class KeyboardNavigator {
         this.handlerMap = {
             ...this.handlerMap,
             ...handlerMap,
-        }
+        };
     }
 
     destroy() {
@@ -51,8 +46,14 @@ export class KeyboardNavigator {
     }
 
     private get allFocusables(): HTMLElement[] {
-        const focusables = Array.from(this.view.querySelectorAll('*[tabIndex]')) as HTMLElement[];
-        return focusables.filter((element) => element.offsetParent !== null && element.getAttribute('disabled') === null);
+        const focusables = Array.from(
+            this.view.querySelectorAll("*[tabIndex]"),
+        ) as HTMLElement[];
+        return focusables.filter(
+            (element) =>
+                element.offsetParent !== null &&
+                element.getAttribute("disabled") === null,
+        );
     }
 
     get focusIndex(): number {
@@ -75,7 +76,10 @@ export class KeyboardNavigator {
     }
 
     rotateFocus(direction: number) {
-        if (!document.activeElement || document.activeElement.getAttribute('tabindex') === null) {
+        if (
+            !document.activeElement ||
+            document.activeElement.getAttribute("tabindex") === null
+        ) {
             this.focusIndex = 0;
             return;
         }
@@ -84,14 +88,19 @@ export class KeyboardNavigator {
     }
 
     rotateFocusXY(dx: number, dy: number) {
-        if (!document.activeElement || document.activeElement.getAttribute('tabindex') === null) {
+        if (
+            !document.activeElement ||
+            document.activeElement.getAttribute("tabindex") === null
+        ) {
             this.focusIndex = 0;
             return;
         }
 
         const currentFocus = document.activeElement as HTMLElement;
 
-        const otherFocusables = this.allFocusables.filter(focusable => focusable !== currentFocus);
+        const otherFocusables = this.allFocusables.filter(
+            (focusable) => focusable !== currentFocus,
+        );
         if (!otherFocusables.length) return;
 
         const directionAngle = normalizeAngle(Math.atan2(dy, dx));
@@ -100,24 +109,32 @@ export class KeyboardNavigator {
             if (focusable === currentFocus) return true;
 
             const angleToFocusable = this.angleBetween(currentFocus, focusable);
-            const angleDiff = Math.abs(normalizeAngle(angleToFocusable - directionAngle));
+            const angleDiff = Math.abs(
+                normalizeAngle(angleToFocusable - directionAngle),
+            );
 
             return Math.min(angleDiff, Math.PI - angleDiff) < Math.PI / 16;
         });
 
         const distanceScore = (focusable: HTMLElement) => {
-            const dist = distance(this.centerOf(focusable), this.centerOf(currentFocus));
+            const dist = distance(
+                this.centerOf(focusable),
+                this.centerOf(currentFocus),
+            );
             const angleToFocusable = this.angleBetween(currentFocus, focusable);
-            const angleDiff = Math.abs(normalizeAngle(angleToFocusable - directionAngle));
+            const angleDiff = Math.abs(
+                normalizeAngle(angleToFocusable - directionAngle),
+            );
 
-            return angleDiff > Math.PI / 2
-                ? -dist
-                : dist;
+            return angleDiff > Math.PI / 2 ? -dist : dist;
         };
 
-        const sequenceSortedByDistance = elementsInSequence.sort((a, b) => distanceScore(a) - distanceScore(b));
+        const sequenceSortedByDistance = elementsInSequence.sort(
+            (a, b) => distanceScore(a) - distanceScore(b),
+        );
 
-        const currentFocusIndex = sequenceSortedByDistance.indexOf(currentFocus);
+        const currentFocusIndex =
+            sequenceSortedByDistance.indexOf(currentFocus);
         if (currentFocusIndex === sequenceSortedByDistance.length - 1) {
             sequenceSortedByDistance[0]?.focus();
         } else {
@@ -133,13 +150,12 @@ export class KeyboardNavigator {
         };
     }
 
-    private angleBetween(
-        a: HTMLElement,
-        b: HTMLElement,
-    ): number {
+    private angleBetween(a: HTMLElement, b: HTMLElement): number {
         const centerA = this.centerOf(a);
         const centerB = this.centerOf(b);
 
-        return normalizeAngle(Math.atan2(centerB.y - centerA.y, centerB.x - centerA.x));
+        return normalizeAngle(
+            Math.atan2(centerB.y - centerA.y, centerB.x - centerA.x),
+        );
     }
 }

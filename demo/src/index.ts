@@ -1,4 +1,4 @@
-import { KeyboardNavigator } from '@remvst/keyboard-focus-navigator';
+import { KeyboardNavigator } from "@remvst/keyboard-focus-navigator";
 
 window.addEventListener("load", async () => {
     const navigator = new KeyboardNavigator(document.body);

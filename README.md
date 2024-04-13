@@ -21,7 +21,7 @@ Your elements must have a `tabindex` specified:
 You can then set up the key handlers:
 
 ```typescript
-import { KeyboardNavigator } from '@remvst/keyboard-focus-navigator';
+import { KeyboardNavigator } from "@remvst/keyboard-focus-navigator";
 
 const navigator = new KeyboardNavigator(document.body);
 navigator.handleKeys(KeyboardNavigator.ARROW_KEY_HANDLERS);
