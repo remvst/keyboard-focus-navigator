@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Keyboard Navigator Demo</title>
+
+        <style>
+            button {
+                border: 1px solid black;
+                width: 100px;
+                height: 50px;
+            }
+
+            button:focus {
+                border: 1px solid red;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <button tabindex="0">Top left</button>
+            <button tabindex="0">Top</button>
+            <button tabindex="0">Top right</button>
+        </div>
+
+        <div>
+            <button tabindex="0">Left</button>
+            <button tabindex="0" disabled>Middle</button>
+            <button tabindex="0">Right</button>
+        </div>
+
+        <div>
+            <button tabindex="0">Bottom left</button>
+            <button tabindex="0">Bottom</button>
+            <button tabindex="0">Bottom Right</button>
+        </div>
+    </body>
+</html>
